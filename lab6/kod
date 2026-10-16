@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+int f(int x) {
+    if (x > 0)
+        return x * x;
+    else
+        return 0;
+}
+
+void numbers() {
+    int n;
+
+    cout << "Введіть n ";
+    cin >> n;
+
+    for (int a = 1; a < n; a++) {
+        for (int b = 1; b < n; b++) {
+            for (int c = 1; c < n; c++) {
+                if (f(a) + f(b) == f(c)) {
+                    cout << a << " " << b << " " << c << endl;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    numbers();
+
+    return 0;
+}
