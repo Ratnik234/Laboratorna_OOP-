@@ -1,0 +1,85 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+class Time {
+private:
+    int hour;
+    int minute;
+    int second;
+
+    void normalize() {
+        minute += second / 60;
+        second %= 60;
+        if (second < 0) { second += 60; minute--; }
+
+        hour += minute / 60;
+        minute %= 60;
+        if (minute < 0) { minute += 60; hour--; }
+
+        hour %= 24;
+        if (hour < 0) hour += 24;
+    }
+
+public:
+    Time(int h = 0, int m = 0, int s = 0) : hour(h), minute(m), second(s) {
+        normalize();
+    }
+
+    void setHour(int h)   { hour = h;   normalize(); }
+    void setMinute(int m) { minute = m; normalize(); }
+    void setSecond(int s) { second = s; normalize(); }
+
+    int getHour() const   { return hour; }
+    int getMinute() const { return minute; }
+    int getSecond() const { return second; }
+
+    void addSecond() { second++; normalize(); }
+    void addMinute() { minute++; normalize(); }
+    void addHour()   { hour++;   normalize(); }
+
+    void print() const {
+        cout << setfill('0')
+             << setw(2) << hour << ":"
+             << setw(2) << minute << ":"
+             << setw(2) << second << endl;
+    }
+};
+
+int main() {
+    int h, m, s;
+    cout << "Введіть годину, хвилину та секунду: ";
+    cin >> h >> m >> s;
+
+    Time t(h, m, s);
+    cout << "Початковий час:        ";
+    t.print();
+
+    t.addSecond();
+    cout << "+1 секунда:            ";
+    t.print();
+
+    t.addMinute();
+    cout << "+1 хвилина:            ";
+    t.print();
+
+    t.addHour();
+    cout << "+1 година:             ";
+    t.print();
+
+    cout << "\nДемонстрація set-/get-методів:\n";
+    t.setHour(23);
+    t.setMinute(59);
+    t.setSecond(59);
+    cout << "Встановлено:           ";
+    t.print();
+    cout << "get: година = " << t.getHour()
+         << ", хвилина = " << t.getMinute()
+         << ", секунда = " << t.getSecond() << endl;
+
+    t.addSecond();
+    cout << "+1 секунда (перехід через північ): ";
+    t.print();
+
+    return 0;
+}
