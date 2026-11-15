@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+struct Point {
+    double x, y, z;
+};
+
+class Triangle {
+private:
+    Point a, b, c; 
+     static double distance(const Point& p, const Point& q) {
+        double dx = p.x - q.x;
+        double dy = p.y - q.y;
+        double dz = p.z - q.z;
+        return sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
+public:
+    Triangle() : a{0, 0, 0}, b{1, 0, 0}, c{0, 1, 0} {}
+
+     void input() {
+        cout << "Введіть координати вершин трикутника (x y z):\n";
+        cout << "Вершина A: ";
+        cin >> a.x >> a.y >> a.z;
+        cout << "Вершина B: ";
+        cin >> b.x >> b.y >> b.z;
+        cout << "Вершина C: ";
+        cin >> c.x >> c.y >> c.z;
+    }
+
+        void print() const {
+        cout << "Трикутник ABC:\n";
+        cout << "  A(" << a.x << "; " << a.y << "; " << a.z << ")\n";
+        cout << "  B(" << b.x << "; " << b.y << "; " << b.z << ")\n";
+        cout << "  C(" << c.x << "; " << c.y << "; " << c.z << ")\n";
+        cout << "  Довжини сторін: AB = " << distance(a, b)
+             << ", BC = " << distance(b, c)
+             << ", CA = " << distance(c, a) << "\n";
+    }
+
+      double perimeter() const {
+        return distance(a, b) + distance(b, c) + distance(c, a);
+    }
+
+     double area() const {
+        double abx = b.x - a.x, aby = b.y - a.y, abz = b.z - a.z;
+        double acx = c.x - a.x, acy = c.y - a.y, acz = c.z - a.z;
+
+        double cx = aby * acz - abz * acy;
+        double cy = abz * acx - abx * acz;
+        double cz = abx * acy - aby * acx;
+
+        return 0.5 * sqrt(cx * cx + cy * cy + cz * cz);
+    }
+
+    bool isValid() const {
+        return area() > 1e-9;
+    }
+
+    void printResults() const {
+        cout << fixed << setprecision(3);
+        cout << "Периметр P = " << perimeter() << "\n";
+        cout << "Площа    S = " << area() << "\n";
+    }
+};
+
+int main() {
+    Triangle t;
+    t.input();
+
+    cout << "\n";
+    t.print();
+
+    if (!t.isValid()) {
+        cout << "\nТочки лежать на одній прямій, трикутник вироджений.\n";
+        cout << "Площа дорівнює 0.\n";
+        return 0;
+    }
+
+    cout << "\n";
+    t.printResults();
+    return 0;
+}
