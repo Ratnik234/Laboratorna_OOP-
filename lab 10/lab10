@@ -1,0 +1,100 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Tool {
+private:
+    string Name;
+    string Sort;
+    string Date;
+    int Quant;
+    double Cost;
+
+public:
+ 
+    Tool() {
+        Name = "";
+        Sort = "";
+        Date = "";
+        Quant = 0;
+        Cost = 0;
+    }
+
+    ~Tool() {
+    }
+
+   
+    void input() {
+        cout << "Enter tool name: ";
+        getline(cin >> ws, Name);
+
+        cout << "Enter tool sort: ";
+        cin >> Sort;
+
+        cout << "Enter manufacturing date (YYYY-MM-DD): ";
+        cin >> Date;
+
+        cout << "Enter quantity: ";
+        cin >> Quant;
+
+        cout << "Enter cost: ";
+        cin >> Cost;
+    }
+
+   
+    bool check(string userDate) {
+        return Sort == "I" && Date < userDate;
+    }
+
+  
+    void output() {
+        cout << "\nName: " << Name << endl;
+        cout << "Sort: " << Sort << endl;
+        cout << "Date: " << Date << endl;
+        cout << "Quantity: " << Quant << endl;
+        cout << "Cost: " << Cost << endl;
+    }
+};
+
+int main() {
+    const int MAX = 100;
+    Tool Order[MAX];
+
+    int t;
+    string userDate;
+
+    cout << "Enter number of tools: ";
+    cin >> t;
+
+    if (t <= 0 || t > MAX) {
+        cout << "Incorrect number of tools!" << endl;
+        return 0;
+    }
+
+    for (int i = 0; i < t; i++) {
+        cout << "\nTool " << i + 1 << ":" << endl;
+        Order[i].input();
+    }
+
+
+    cout << "\nEnter date (YYYY-MM-DD): ";
+    cin >> userDate;
+
+    cout << "\nTools of I sort manufactured before "
+         << userDate << ":" << endl;
+
+    bool found = false;
+
+    for (int i = 0; i < t; i++) {
+        if (Order[i].check(userDate)) {
+            Order[i].output();
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No matching tools found!" << endl;
+    }
+
+    return 0;
+}
